@@ -1,0 +1,48 @@
+# Alpine-Maintainer: Natanael Copa <ncopa@alpinelinux.org>
+# Maintainer: Aaron Bassett <abassett@qnx.com>
+pkgname=font-dejavu
+pkgver=2.37
+pkgrel=0
+pkgdesc="Font family based on the Bitstream Vera Fonts with a wider range of characters"
+url="https://dejavu-fonts.github.io/"
+arch="noarch"
+license="Bitstream-Vera"
+options="!check"
+depends="fontconfig encodings mkfontscale"
+makedepends="font-util-dev"
+# added fontconfig configuration from:
+# https://github.com/bohoomil/fontconfig-ultimate/tree/master/fontconfig_patches/fonts-settings
+source="https://downloads.sourceforge.net/project/dejavu/dejavu/$pkgver/dejavu-fonts-ttf-$pkgver.tar.bz2
+	https://downloads.sourceforge.net/project/dejavu/dejavu/$pkgver/dejavu-lgc-fonts-ttf-$pkgver.tar.bz2
+	45-dejavu.conf
+	90-tt-dejavu.conf
+	"
+builddir="$srcdir"
+
+package() {
+	mkdir -p	"$pkgdir"/etc/fonts/conf.d
+
+	install -Dm644 \
+		dejavu-fonts-ttf-$pkgver/ttf/*.ttf \
+		-t "$pkgdir"/usr/share/fonts/dejavu
+
+	install -Dm644 \
+		"$srcdir"/dejavu-fonts-ttf-$pkgver/fontconfig/*.conf \
+		"$srcdir"/dejavu-lgc-fonts-ttf-$pkgver/fontconfig/*.conf \
+		-t "$pkgdir"/etc/fonts/conf.avail/
+
+	cd "$pkgdir"/etc/fonts/conf.d
+	local j
+	for j in "$srcdir"/*.conf; do
+		install -Dm644 "$j" -t "$pkgdir"/etc/fonts/conf.avail/
+		ln -sf ../conf.avail/${j##*/}
+	done
+}
+
+
+sha512sums="
+bafa39321021097432777f0825d700190c23f917d754a4504722cd8946716c22c083836294dab7f3ae7cf20af63c4d0944f3423bf4aa25dbca562d1f30e00654  dejavu-fonts-ttf-2.37.tar.bz2
+4bf36813b4143a482a50ee20377166cbc22e3aa62ccb453fe6ce27d2286acaf2b6f06759eb5d5000d2f868a7d93ecad851ad29de60fb531ed9ac2fcd7b9bdc1f  dejavu-lgc-fonts-ttf-2.37.tar.bz2
+00c0bd38aaa34c11f66aa04dd2dc917a62d8308a1f47171ee929e65ed00221e1e521191cd864b117e5b6ba26e1dd5637f69976276ffe00a75793178de3221858  45-dejavu.conf
+a99aa53e29fc7894dde3bb2b2990dccdb94425d3b8250bebbcb6486bbc6544ca8090ee22bfba59ea5552162d101c9e67b4445d522fd1ce7c81216d1d0165c186  90-tt-dejavu.conf
+"
