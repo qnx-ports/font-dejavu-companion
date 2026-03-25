@@ -2,7 +2,7 @@
 # Maintainer: Aaron Bassett <abassett@qnx.com>
 pkgname=font-dejavu
 pkgver=2.37
-pkgrel=${pkgrel:-0}
+pkgrel=0
 pkgdesc="Font family based on the Bitstream Vera Fonts with a wider range of characters"
 url="https://dejavu-fonts.github.io/"
 arch="noarch"
@@ -40,7 +40,6 @@ package() {
 }
 
 
-options="$options ${DISABLE_CHECK:+!check}"
 sha512sums="
 bafa39321021097432777f0825d700190c23f917d754a4504722cd8946716c22c083836294dab7f3ae7cf20af63c4d0944f3423bf4aa25dbca562d1f30e00654  dejavu-fonts-ttf-2.37.tar.bz2
 4bf36813b4143a482a50ee20377166cbc22e3aa62ccb453fe6ce27d2286acaf2b6f06759eb5d5000d2f868a7d93ecad851ad29de60fb531ed9ac2fcd7b9bdc1f  dejavu-lgc-fonts-ttf-2.37.tar.bz2
